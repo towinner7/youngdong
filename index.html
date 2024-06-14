@@ -1,1 +1,24 @@
-print("hello world")
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<title>영동양수</title>
+</head>
+
+<body>
+
+<script>
+function isMobile() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+
+if (isMobile())
+  {	window.location.href = "/youngdong/영동양수_모바일.html";}
+
+ else { window.location.href =  "/youngdong/영동양수_웹.html";}; 
+
+</script>
+
+</body>
+</html>
