@@ -93,6 +93,8 @@ strokeOpacity: 1,
 strokeStyle: 'solid'
 });
 polyline1.setMap(map);
+
+
 var currentTypeId;
 function setOverlayMapTypeId(maptype) { var changeMaptype;
     if (maptype === 'addmapdelete') {
@@ -215,46 +217,28 @@ var marker1;
             document.getElementById('text').innerHTML = tmxy;
         }
 
-function getLocation() {
+//  function getLocation() {
   
-//    var startPos;
-//  var geoOptions = {
-//    enableHighAccuracy: true
-//  }
 
-//  var geoSuccess = function(position) {
-//   startPos = position;
-//    document.getElementById('startLat').innerHTML = startPos.coords.latitude;
-//    document.getElementById('startLon').innerHTML = startPos.coords.longitude;
-//  };
-//  var geoError = function(error) {
-//    console.log('Error occurred. Error code: ' + error.code);
-    // error.code can be:
-    //   0: unknown error
-    //   1: permission denied
-    //   2: position unavailable (error response from location provider)
-    //   3: timed out
-  
-//  alert(position.coords.latitude + ' ' + position.coords.longitude);
   
 
 
   
   
   
-  if (navigator.geolocation) { // GPS를 지원하면
-    navigator.geolocation.getCurrentPosition(function(position) {
+//  if (navigator.geolocation) { // GPS를 지원하면
+//    navigator.geolocation.getCurrentPosition(function(position) {
       
           // var moveLatLon = new kakao.maps.LatLng(position.coords.latitude, position.coords.longitude);
           
-          var lat = position.coords.latitude,  // 위도
-              lon = position.coords.longitude; // 경도
+//          var lat = position.coords.latitude,  // 위도
+//              lon = position.coords.longitude; // 경도
     
     // 지도 중심을 부드럽게 이동시킵니다
     // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
     // map.panTo(moveLatLon);            
     
-    	var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+//    	var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
     
     
     // var marker = new kakao.maps.Marker({  
@@ -269,7 +253,7 @@ function getLocation() {
      // 마커와 인포윈도우를 표시합니다
   //      displayMarker(moveLatLon, "your point");
     
-    displayMarker(locPosition,"");
+//    displayMarker(locPosition,"");
       
       
       
@@ -281,29 +265,31 @@ function getLocation() {
 //      enableHighAccuracy: false,
 //      maximumAge: 0,
 //      timeout: Infinity
-    });
-  } else {
-    alert('GPS를 지원하지 않습니다');
-  }
 
 
-//  return
-  }
+//    });
+//  } else {
+//    alert('GPS를 지원하지 않습니다');
+//  }
+
+
+
+//  }
 
 
 
 
 // 지도에 마커와 인포윈도우를 표시하는 함수입니다
-function displayMarker(locPosition, message) {
+//function displayMarker(locPosition, message) {
 
     // 마커를 생성합니다
-        var marker = new kakao.maps.Marker({  
-        map: map, 
-        position: locPosition
-    }); 
+//        var marker = new kakao.maps.Marker({  
+//        map: map, 
+//        position: locPosition
+//    }); 
     
     
-    marker.setMap(null);
+//    marker.setMap(null);
     //var iwContent = message, // 인포윈도우에 표시할 내용
     //    iwRemoveable = true;
 
@@ -314,12 +300,12 @@ function displayMarker(locPosition, message) {
     // });
     
     // 인포윈도우를 마커위에 표시합니다 
-    marker.setMap(map);
-    marker.setPosition(locPosition);
+//    marker.setMap(map);
+//    marker.setPosition(locPosition);
     // 지도 중심좌표를 접속위치로 변경합니다
-    map.setCenter(locPosition);      
-    return
-}
+//    map.setCenter(locPosition);      
+//    return
+//}
 
 
 
