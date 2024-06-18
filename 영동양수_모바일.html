@@ -117,105 +117,7 @@ function setOverlayMapTypeId(maptype) { var changeMaptype;
     }
 }
 
-var marker1;
-        var markers1 = [];
-        var j = 0;
-        var yesum = 0;
-        var xnsum = 0;
-        var mapContainer = document.getElementById('map');
-        var mapOption = {
-            center: new daum.maps.LatLng(37.566535, 126.9779692), // Seoul coordinates as default center
-            level: 3
-        };
-        var map = new daum.maps.Map(mapContainer, mapOption);
 
-        function removeMarker() {
-            for (var i = 0; i < markers1.length; i++) {
-                markers1[i].setMap(null);
-            }
-            markers1 = [];
-        }
-
-        var options = { enableHighAccuracy: true };
-
-        if (navigator.geolocation) {
-            navigator.geolocation.watchPosition(success, error, options);
-        } else {
-            document.getElementById('text').innerHTML = '이 브라우저에서는 Geolocation이 지원되지 않습니다.';
-        }
-
-        function error(e) {
-            document.getElementById('text').innerHTML = 'Geolocation 오류 ' + e.code + ': ' + e.message;
-        }
-
-        function calculateTMCoordinates(latitude, longitude) {
-            var a = 6378137;
-            var f = 1 / 298.257222101;
-            var b = a * (1 - f);
-            var e21 = (Math.pow(a, 2) - Math.pow(b, 2)) / Math.pow(a, 2);
-            var e22 = (Math.pow(a, 2) - Math.pow(b, 2)) / Math.pow(b, 2);
-            var phig = latitude;
-            var lambdag = longitude;
-            var radPhi = phig * Math.PI / 180;
-            var radLambda = lambdag * Math.PI / 180;
-            var radLambda0 = 127 * Math.PI / 180;
-
-            var M0 = a * ((1 - e21 / 4 - 3 * Math.pow(e21, 2) / 64 - 5 * Math.pow(e21, 3) / 256) * (38 * Math.PI / 180) +
-                (-3 * e21 / 8 - 3 * Math.pow(e21, 2) / 32 - 45 * Math.pow(e21, 3) / 1024) * Math.sin(2 * 38 * Math.PI / 180) +
-                (15 * Math.pow(e21, 2) / 256 + 45 * Math.pow(e21, 3) / 1024) * Math.sin(4 * 38 * Math.PI / 180) -
-                35 * Math.pow(e21, 3) / 3072 * Math.sin(6 * 38 * Math.PI / 180));
-
-            var M = a * ((1 - e21 / 4 - 3 * Math.pow(e21, 2) / 64 - 5 * Math.pow(e21, 3) / 256) * radPhi +
-                (-3 * e21 / 8 - 3 * Math.pow(e21, 2) / 32 - 45 * Math.pow(e21, 3) / 1024) * Math.sin(2 * radPhi) +
-                (15 * Math.pow(e21, 2) / 256 + 45 * Math.pow(e21, 3) / 1024) * Math.sin(4 * radPhi) -
-                35 * Math.pow(e21, 3) / 3072 * Math.sin(6 * radPhi));
-
-            var N = a / Math.sqrt(1 - e21 * Math.pow(Math.sin(radPhi), 2));
-            var A = (radLambda - radLambda0) * Math.cos(radPhi);
-            var T = Math.pow(Math.tan(radPhi), 2);
-            var C = e21 / (1 - e21) * Math.pow(Math.cos(radPhi), 2);
-
-            var YE = 200000 + N * (A + Math.pow(A, 3) / 6 * (1 - T + C) + Math.pow(A, 5) / 120 * (5 - 18 * T + Math.pow(T, 2) + 72 * C - 58 * e22));
-            var XN = 600000 + (M - M0 + N * Math.tan(radPhi) * (Math.pow(A, 2) / 2 + Math.pow(A, 4) / 24 * (5 - T + 9 * C + 4 * Math.pow(C, 2)) +
-                Math.pow(A, 6) / 720 * (61 - 58 * T + Math.pow(T, 2) + 600 * C - 330 * e22)));
-
-            return { YE: YE, XN: XN };
-        }
-
-        function success(pos) {
-            var latitude = pos.coords.latitude;
-            var longitude = pos.coords.longitude;
-
-            var imageSrc = 'https://2.bp.blogspot.com/-Hb-8D2y7_qs/WVodUIrn5CI/AAAAAAAA2Ok/0rnf47BNY_8-lUI0XvfOOae9SRIv75GwQCLcBGAs/s1600/%25EC%25A7%2584%25EC%25A3%25BC%2B%25EC%25A0%259C%25EC%2588%2598%25EB%25B0%25B8%25EB%25B8%258C%2B%25EC%25A0%2581%25EC%2583%2589%2B.png';
-            var imageSize = new daum.maps.Size(17, 17);
-            var imageOption = { offset: new daum.maps.Point(8, 8) };
-            var markerImage = new daum.maps.MarkerImage(imageSrc, imageSize, imageOption);
-            var markerPosition = new daum.maps.LatLng(latitude, longitude);
-
-            if (!marker1) {
-                marker1 = new daum.maps.Marker({
-                    position: markerPosition,
-                    image: markerImage,
-                    title: '제수변 마크 중심이 지도 아래의 좌표값입니다.'
-                });
-            } else {
-                marker1.setPosition(markerPosition);
-            }
-
-            marker1.setMap(map);
-
-            var { YE, XN } = calculateTMCoordinates(latitude, longitude);
-
-            j += 1;
-            yesum += YE;
-            xnsum += XN;
-
-            var yeaverage = yesum / j;
-            var xnaverage = xnsum / j;
-
-            var tmxy = `${j}번째, ${new Date(pos.timestamp).toLocaleString()} 중부원점 TM좌표 E:${YE.toFixed(3)},N:${XN.toFixed(3)} 오차범위:${pos.coords.accuracy.toFixed(3)}m ${j}회 평균 E:${yeaverage.toFixed(3)}, N:${xnaverage.toFixed(3)}`;
-            document.getElementById('text').innerHTML = tmxy;
-        }
 
   function getLocation() {
   
@@ -258,13 +160,13 @@ var marker1;
       
       
       
-      alert(position.coords.latitude + ' ' + position.coords.longitude);
-    }, function(error) {
-      console.error(error);
-    }, {
-      enableHighAccuracy: false,
-      maximumAge: 0,
-      timeout: Infinity
+//      alert(position.coords.latitude + ' ' + position.coords.longitude);
+//    }, function(error) {
+//      console.error(error);
+//    }, {
+//      enableHighAccuracy: false,
+//      maximumAge: 0,
+//      timeout: Infinity
 
 
     });
